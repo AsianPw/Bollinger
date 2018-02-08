@@ -1,0 +1,42 @@
+#! /usr/bin/env ruby
+
+require 'optparse'
+require_relative 'lib/ParseArg'
+require_relative 'lib/Display'
+require_relative 'lib/Data'
+require_relative 'lib/MovingAverage'
+
+SPACE = '    '
+USAGE_1 = "#{SPACE}period\t\tnumber of indexes for the moving average\n"
+USAGE_2 = "#{SPACE}standard_dev\tstandard deviation coefficient to apply\n"
+USAGE_3 = "#{SPACE}indexes_file\tfile containing daily indexes\n"
+USAGE_4 = "#{SPACE}index_number\tindex number to compute moving average and Bollinger bands\n\n"
+USAGE_HEADER = "Bollinger Bands\n\nUSAGE:\n#{SPACE}./bollinger [-h] period standard_dev indexes_file index_number\n\n"
+USAGE = "#{USAGE_HEADER}#{USAGE_1}#{USAGE_2}#{USAGE_3}#{USAGE_4}"
+OPTIONS = "OPTIONS:\n#{SPACE}-h\t\t\tprint the usage and quit.\n"
+
+options = OptionParser.new do|opts|
+  opts.on('-h', '--help', 'Displays Help') do
+    puts USAGE
+    puts OPTIONS
+    exit 0
+  end
+end
+
+begin
+  options.parse!
+rescue OptionParser::InvalidOption => e
+    STDERR.puts "#{e}"
+    exit 84
+end
+
+clean_arg = ParseArg.new(ARGV).clean_arg
+
+content = GetData.get_data_from(ARGV[2])
+
+Display.input(clean_arg)
+output_data = {mov_average: 0.0, st_dev: 0.0}
+
+output_data[:mov_average] = MovingAverage.compute(content, clean_arg[:period], clean_arg[:index])
+
+Display.output(output_data)
