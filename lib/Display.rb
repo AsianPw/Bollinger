@@ -9,9 +9,9 @@ module Display
   def self.output(output_data)
     printf("OUTPUT\n")
     printf("MA: %.2f\n", output_data[:mov_average])
-    printf("SD: \n")
-    printf("B+: \n")
-    printf("B-: \n")
+    printf("SD: %.2f\n", output_data[:st_dev])
+    printf("B+: %.2f\n", output_data[:high_b])
+    printf("B-: %.2f\n", output_data[:lower_b])
   end
 
 end

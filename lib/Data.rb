@@ -10,4 +10,8 @@ module GetData
     content
   end
 
+  def self.create_batch(end_index, period, data)
+    data.values_at end_index-period+1..end_index
+  end
+    
 end
