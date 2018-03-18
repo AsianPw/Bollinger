@@ -40,13 +40,13 @@ class ParseArg
       @clean_arg[:index] = arg.to_i
     end
   end
-  
+
   # Check if correct nb of argument is pass
   def is_correct_size?
     (@args.size == NB_ARGS) ? true : false
   end
 
-  # Check if arg is correct type
+  # Check if arg type is correct
   def is_correct_type?(arg, type)
     case type
       when FLOAT

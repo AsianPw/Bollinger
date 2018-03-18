@@ -34,6 +34,21 @@ clean_arg = ParseArg.new(ARGV).clean_arg
 
 content = GetData.get_data_from(ARGV[2])
 
+if content.size <= clean_arg[:period]
+  STDERR.puts "The period exceeds the number of file entries"
+  return 84
+end
+
+if clean_arg[:period] > clean_arg[:index]
+  STDERR.puts "The period exceeds the index"
+  return 84
+end
+
+if content.size <= clean_arg[:index]
+  STDERR.puts "The index exceeds the number of file entries"
+  return 84
+end
+
 Display.input(clean_arg)
 output_data = {mov_average: 0.0, st_dev: 0.0, lower_b: 0.0, high_b: 0.0}
 
